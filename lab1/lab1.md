@@ -77,11 +77,16 @@ public class HelloWorld : MonoBehaviour
 ## Задание 3
 ### Оформить отчет в виде документации на github (markdown-разметка).
 
+#### "Hello, world!" в Jupyter Notebook
+![Изображение](HelloWorld_JupyterNotebook.png)
 
+#### "Hello, world!" в Unity
+![Изображение](HelloWorld_Unity.png)
 
 ## Выводы
 
-Абзац умных слов о том, что было сделано и что было узнано.
+
+В ходе данной работы, я установил нужное ПО, которое пригодится для создания интеллектуальных моделей на Python, а именно дистрибутив Anaconda и научился работать в Jupyter Notebook. С Unity уже приходилось работать, поэтому данная программа уже была установлена.
 
 | Plugin | README |
 | ------ | ------ |
