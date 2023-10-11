@@ -50,32 +50,38 @@
 
 
 ## Задание 2
-### Должна ли величина loss стремиться к нулю при изменении исходных данных? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ.
+### На языке Python заполните google-таблицу данными, описывающими выбранную игровую переменную.
 
-- Перечисленные в этом туториале действия могут быть выполнены запуском на исполнение скрипт-файла, доступного [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
-- Для запуска скрипт-файла откройте Ansys Electronics Desktop. Перейдите во вкладку [Automation] - [Run Script] - [Выберите файл с именем ScreatingSphereInAEDT.py из репозитория].
+- Логика заполнения таблицы данными, описывающими шкалу турбо, заключается в том, что значения шкалы всегда лежат в диапазоне от 0 до 100 единиц. Поэтому в коде я делю рандомное значение на 100 и беру остаток, а если значение турбо делится на 100 нацело и больше либо равно 100 (т.е. 100, 200, 300 и т.д.), то таким числам я присваиваю значение 100. Получается следующий код.
 
 ```py
 
-import ScriptEnv
-ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
-oDesktop.RestoreWindow()
-oProject = oDesktop.NewProject()
-oProject.Rename("C:/Users/denisov.dv/Documents/Ansoft/SphereDIffraction.aedt", True)
-oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Terminal Network", "")
-oDesign = oProject.SetActiveDesign("HFSSDesign1")
-oEditor = oDesign.SetActiveEditor("3D Modeler")
-oEditor.CreateSphere(
-	[
-		"NAME:SphereParameters",
-		"XCenter:="		, "0mm",
-		"YCenter:="		, "0mm",
-		"ZCenter:="		, "0mm",
-		"Radius:="		, "1.0770329614269mm"
-	], 
-)
+import gspread
+import numpy as np
+gc = gspread.service_account(filename='da-in-unity-3a1eb3e80485.json')
+sh = gc.open("DA_In_Gamedev")
+turbo_value = np.random.randint(0, 1000, 15)
+values = list(range(1,15))
+i = 0
+while i <= len(values):
+    i += 1
+    if i == 0:
+        continue
+    else:
+        turbo_scale = turbo_value[i-1] % 100
+        if (turbo_scale == 0 and turbo_value[i-1] >= 100): turbo_scale = 100
+        trubo_scale = str(turbo_scale)
+        
+        sh.sheet1.update(('A' + str(i)), str(i))
+        sh.sheet1.update(('B' + str(i)), str(turbo_value[i-1]))
+        sh.sheet1.update(('C' + str(i)), str(turbo_scale))
+        print(turbo_scale)
 
 ```
+
+- В таблице эти значения выглядят так.
+
+  
 
 ## Задание 3
 ### Какова роль параметра Lr? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ. В качестве эксперимента можете изменить значение параметра.
