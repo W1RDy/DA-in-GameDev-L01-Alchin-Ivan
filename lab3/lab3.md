@@ -6,9 +6,9 @@
 
 | Задание | Выполнение | Баллы |
 | ------ | ------ | ------ |
-| Задание 1 | # | 60 |
-| Задание 2 | # | 20 |
-| Задание 3 | # | 20 |
+| Задание 1 | * | 60 |
+| Задание 2 | * | 20 |
+| Задание 3 | * | 20 |
 
 знак "*" - задание выполнено; знак "#" - задание не выполнено;
 
@@ -23,7 +23,7 @@
 
 Структура отчета
 
-- Данные о работе: Идеальный баланс, Алчин Иван Сергеевич, РИ-220945, выполненные задания.
+- Данные о работе: Идеальный баланс, Алчин Иван Сергеевич, РИ-220945, выполненные задания: 1, 2, 3.
 - Цель работы.
 - Задание 1.
 - Код реализации выполнения задания. Визуализация результатов выполнения (если применимо).
@@ -47,62 +47,73 @@
 ## Задание 2
 ### Создать 10 сцен на Unity с изменяющимся уровнем сложности.
 
-- Перечисленные в этом туториале действия могут быть выполнены запуском на исполнение скрипт-файла, доступного [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
-- Для запуска скрипт-файла откройте Ansys Electronics Desktop. Перейдите во вкладку [Automation] - [Run Script] - [Выберите файл с именем ScreatingSphereInAEDT.py из репозитория].
-
-```py
-
-import ScriptEnv
-ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
-oDesktop.RestoreWindow()
-oProject = oDesktop.NewProject()
-oProject.Rename("C:/Users/denisov.dv/Documents/Ansoft/SphereDIffraction.aedt", True)
-oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Terminal Network", "")
-oDesign = oProject.SetActiveDesign("HFSSDesign1")
-oEditor = oDesign.SetActiveEditor("3D Modeler")
-oEditor.CreateSphere(
-	[
-		"NAME:SphereParameters",
-		"XCenter:="		, "0mm",
-		"YCenter:="		, "0mm",
-		"ZCenter:="		, "0mm",
-		"Radius:="		, "1.0770329614269mm"
-	], 
-)
-
-```
+- Данное задание сделано в проекте, который доступен [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
 
 ## Задание 3
 ### Заполнить google-таблицу данными из Python. В Python визуализировать данные.
 
-- Перечисленные в этом туториале действия могут быть выполнены запуском на исполнение скрипт-файла, доступного [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
-- Для запуска скрипт-файла откройте Ansys Electronics Desktop. Перейдите во вкладку [Automation] - [Run Script] - [Выберите файл с именем ScreatingSphereInAEDT.py из репозитория].
+- Значения параметров я решил прописать вручную, так как с косинусоидой не получится сделать резкое возрастание сложности в конце. Так как у меня 4 параметра с разными диапазонами, которые нужно изменять, я решил, что будет не удобно рисовать всё на одном графике, поэтому разбил его на 4 графика для каждого параметра. Сохранив значения параметров в переменные, я пробегаюсь по ним и записываю в нужные ячейки таблицы.
+- Получился вот такой код на Python.
 
 ```py
 
-import ScriptEnv
-ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
-oDesktop.RestoreWindow()
-oProject = oDesktop.NewProject()
-oProject.Rename("C:/Users/denisov.dv/Documents/Ansoft/SphereDIffraction.aedt", True)
-oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Terminal Network", "")
-oDesign = oProject.SetActiveDesign("HFSSDesign1")
-oEditor = oDesign.SetActiveEditor("3D Modeler")
-oEditor.CreateSphere(
-	[
-		"NAME:SphereParameters",
-		"XCenter:="		, "0mm",
-		"YCenter:="		, "0mm",
-		"ZCenter:="		, "0mm",
-		"Radius:="		, "1.0770329614269mm"
-	], 
-)
+import gspread
+import numpy as np
+import matplotlib.pyplot as plt
+
+def make_plot(ax, datas, name):
+    box = dict(facecolor='yellow', pad=2, alpha=0.2)
+    np.random.seed(450)
+    ax.plot(datas)
+    ax.set_ylabel(name, bbox=box)
+    ax.set_xlim(1, 10)
+    ax.set_xticks(np.arange(1, 11, 1))
+    ax.set_yticks(np.arange(round(min(datas), 3), round(max(datas) * 1.05, 3), (max(datas)-min(datas))/5))
+    
+def fill_sheet(sh, datas):
+    columns = 'BCDE'
+    data_index = 0
+    for row in range(22, 77, 6):
+        data_index += 1
+        for i in range(4):
+            sh.sheet1.update(columns[i] + str(row), datas[i][data_index])
+            print(f'В ячейку {columns[i],row} записано {datas[i][data_index]}')
+        print('\n')
+       
+# Записываем значения параметров вместе со значением до баланса
+data_speed = [10, 12, 11, 13, 14, 12, 15, 14, 16, 17, 18]
+data_distance = [10, 10, 11, 11, 12, 10, 11, 11, 12, 12, 13]
+data_chance = [0.01, 0.01, 0.012, 0.012, 0.013, 0.012, 0.012, 0.014, 0.015, 0.013, 0.014]
+data_cooldown = [2, 1.9, 2, 1.8, 1.9, 1.8, 1.7, 1.6, 1.6, 1.5, 1.5]
+
+# Настраиваем график       
+fig, axs = plt.subplots(2, 2)
+fig.subplots_adjust(left=0.1, wspace=1)
+labelx = -0.3
+for j in range(2):
+    axs[j, 1].yaxis.set_label_coords(labelx, 0.5)
+    
+# Ставим точки и рисуем график
+make_plot(axs[0,0], data_speed, 'Скорость дракона')
+make_plot(axs[1,0], data_distance, 'Шанс направления')
+make_plot(axs[0,1], data_chance, 'Дистанция движения')
+make_plot(axs[1,1], data_cooldown, 'Время сброса яйца')
+plt.show()
+
+# Заносим значения параметров в таблицу
+gc = gspread.service_account(filename='da-in-unity-3a1eb3e80485.json')
+sh = gc.open("Lab3")
+fill_sheet(sh, [data_speed, data_distance, data_chance, data_cooldown])
 
 ```
 
+- Вот так выглядят графики.
+
+  [!Image](Graphs.png)
+
 ## Выводы
 
-Абзац умных слов о том, что было сделано и что было узнано.
+В ходе данной работы, я научился использовать таблицу Google для визуализирования изменения баланса, а так же научился строить графики по значениям в Python с помощью модуля pyplot.
 
 | Plugin | README |
 | ------ | ------ |
