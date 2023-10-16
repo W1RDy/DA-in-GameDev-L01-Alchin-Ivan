@@ -49,6 +49,7 @@
 
 - Данное задание сделано в проекте, который доступен [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
 
+
 ## Задание 3
 ### Заполнить google-таблицу данными из Python. В Python визуализировать данные.
 
@@ -81,7 +82,7 @@ def fill_sheet(sh, datas):
         print('\n')
        
 # Записываем значения параметров вместе со значением до баланса
-data_speed = [10, 12, 11, 13, 14, 12, 15, 14, 16, 17, 18]
+data_speed = [4, 6, 5, 7, 8, 6, 9, 8, 10, 11, 12]
 data_distance = [10, 10, 11, 11, 12, 10, 11, 11, 12, 12, 13]
 data_chance = [0.01, 0.01, 0.012, 0.012, 0.013, 0.012, 0.012, 0.014, 0.015, 0.013, 0.014]
 data_cooldown = [2, 1.9, 2, 1.8, 1.9, 1.8, 1.7, 1.6, 1.6, 1.5, 1.5]
@@ -109,7 +110,8 @@ fill_sheet(sh, [data_speed, data_distance, data_chance, data_cooldown])
 
 - Вот так выглядят графики.
 
-  [!Image](Graphs.png)
+  ![Изображение](Graphs.png)
+
 
 ## Выводы
 
