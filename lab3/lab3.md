@@ -41,7 +41,7 @@
 ### Предложить вариант изменения найденных переменных для 10 уровней в игре. Визуализировать изменение уровня сложности в таблице. 
 Ход работы:
 - На движение дракона в игре Dragon Picker влияют параметры: speed, leftRightDistance и chanceDirection. На сбрасывание яиц влияет параметры: timeBetweenEggDrop, gravity в настроках физики проекта и дистанция от дракона до платформы. Меняя значения данных параметров будет меняться и баланс игры. Параметры gravity и дистанция до дракона будут постоянными.
--  С новым уровнем сложность игры должна возрастать, но при этом нужно и давать игроку передохнуть, поэтому сложность игры будет колебаться от уровня к уровню. Мой вариант изменения уровня сложности можно посмотреть [в таблице](https://docs.google.com/spreadsheets/d/1UTtf5xSRB9uvGViAs19RiU6ARo-Jy_p_CBMbvY3gqdU/edit#gid=0).
+-  С новым уровнем сложность игры должна возрастать, но при этом будет неинтересно играть если она постоянно растёт, поэтому сложность игры будет повышаться, в середине спадёт и в конце пойдёт резко вверх. Мой вариант изменения уровня сложности можно посмотреть [в таблице](https://docs.google.com/spreadsheets/d/1UTtf5xSRB9uvGViAs19RiU6ARo-Jy_p_CBMbvY3gqdU/edit#gid=0).
 
 
 ## Задание 2
@@ -69,7 +69,7 @@ def make_plot(ax, datas, name):
     ax.set_ylabel(name, bbox=box)
     ax.set_xlim(1, 10)
     ax.set_xticks(np.arange(1, 11, 1))
-    ax.set_yticks(np.arange(round(min(datas), 3), round(max(datas) * 1.05, 3), (max(datas)-min(datas))/5))
+    ax.set_yticks(np.arange(round(min(datas), 3), round(max(datas) * 1.05, 3), round((max(datas)-min(datas))/5,3)))
     
 def fill_sheet(sh, datas):
     columns = 'BCDE'
@@ -82,15 +82,15 @@ def fill_sheet(sh, datas):
         print('\n')
        
 # Записываем значения параметров вместе со значением до баланса
-data_speed = [4, 6, 5, 7, 8, 6, 9, 8, 10, 11, 12]
-data_distance = [10, 10, 11, 11, 12, 10, 11, 11, 12, 12, 13]
-data_chance = [0.01, 0.01, 0.012, 0.012, 0.013, 0.012, 0.012, 0.014, 0.015, 0.013, 0.014]
-data_cooldown = [2, 1.9, 2, 1.8, 1.9, 1.8, 1.7, 1.6, 1.6, 1.5, 1.5]
+data_speed = [4, 10, 13, 16, 18, 17, 19, 20, 21, 23, 26]
+data_distance = [10, 10, 11, 11, 12, 10, 11, 11, 12, 13, 13]
+data_chance = [0.01, 0.011, 0.012, 0.012, 0.014, 0.012, 0.013, 0.014, 0.016, 0.017, 0.018]
+data_cooldown = [2, 1.9, 1.7, 1.6, 1.8, 1.5, 1.3, 1, 0.8, 0.8, 0.6]
 
 # Настраиваем график       
 fig, axs = plt.subplots(2, 2)
 fig.subplots_adjust(left=0.1, wspace=1)
-labelx = -0.3
+labelx = -0.4
 for j in range(2):
     axs[j, 1].yaxis.set_label_coords(labelx, 0.5)
     
@@ -110,7 +110,7 @@ fill_sheet(sh, [data_speed, data_distance, data_chance, data_cooldown])
 
 - Вот так выглядят графики.
 
-  ![Изображение](Graph.png)
+  ![Изображение](Graphs.png)
 
 
 ## Выводы
